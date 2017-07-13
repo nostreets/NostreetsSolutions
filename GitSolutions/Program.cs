@@ -9,7 +9,7 @@ namespace GitSolutions
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) 
         {
             bool active = true;
 
@@ -21,6 +21,22 @@ namespace GitSolutions
 
                 switch (input)
                 {
+                    case "clone":
+                        CloningService srv = new CloningService();
+                        TestClass<Random> test = new TestClass<Random>();
+                        test.Char = '1';
+                        test.String = "adasdasd";
+                        test.Int16 = 11;
+                        test.Int32 = 444;
+
+
+                        var clone = srv.Clone<TestClass<Random>>(test);
+                        test.Char = '2';
+                        test.Int16 = 22;
+                        test.Int32 = 555;
+
+                        break;
+
                     case "pi":
                         Console.WriteLine("Insert A Number \nMax Is {0}", Math.PI.ToString().Length);
                         intInputs[1] = int.Parse(Console.ReadLine());
