@@ -21,6 +21,22 @@ namespace GitSolutions
 
                 switch (input)
                 {
+                    case "fib":
+                        Console.WriteLine("Insert A Number:");
+                        intInputs[0] = int.Parse(Console.ReadLine());
+                        long[] fibNums = Fibonacci(intInputs[0]);
+                        foreach (int i in fibNums)
+                        {
+                            Console.WriteLine(i);
+                        }
+                        break;
+
+                    case "fibEven":
+                        Console.WriteLine("Insert A Number:");
+                        intInputs[0] = int.Parse(Console.ReadLine());
+                        long[] fibEvenNums = Fibonacci(intInputs[0], (a) => a % 2 == 0);
+                        break;
+
                     case "clone":
                         CloningService srv = new CloningService();
                         TestClass<Random> test = new TestClass<Random>();
@@ -91,6 +107,50 @@ namespace GitSolutions
 
         }
 
+        public static long[] Fibonacci(int n, Func<long, bool> predicate = null) {
+
+            long a = 2;
+            long b = 1;
+            List<long> list = new List<long>();
+            // In N steps compute Fibonacci sequence iteratively.
+            for (int i = 0; i < n; i++)
+            {
+                long temp = a;
+                a = b;
+                b = temp + b;
+                if (predicate != null) {
+                    if (predicate(b)) {
+                        list.Add(b);
+                    }
+                }
+                else {
+                    list.Add(b);
+                }
+            }
+
+            return list.ToArray();
+        }
+
+        public static long[] FibonacciOnlyEven(int n)
+        {
+            long a = 2;
+            long b = 1;
+            List<long> list = new List<long>();
+            // In N steps compute Fibonacci sequence iteratively.
+            for (int i = 0; i < n; i++)
+            {
+                long temp = a;
+                a = b;
+                b = temp + b;
+                if (b % 2 == 0)
+                {
+                    list.Add(b);
+                }
+            }
+
+            return list.ToArray();
+
+        }
         public static bool BuySellOrHold(int[] prices, bool hold = false)
         {
             //Incomplete
