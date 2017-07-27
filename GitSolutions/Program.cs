@@ -9,7 +9,7 @@ namespace GitSolutions
 {
     class Program
     {
-        static void Main(string[] args) 
+        static void Main(string[] args)
         {
             bool active = true;
 
@@ -17,13 +17,72 @@ namespace GitSolutions
             {
                 Console.WriteLine("Insert Name of Problem");
                 string input = Console.ReadLine();
-                int[] intInputs = new int[4];
+                List<int> intInputs = new List<int>();
 
                 switch (input)
                 {
+                    case "cal":
+                        Console.WriteLine("What Formlua?");
+                        input = Console.ReadLine();
+                        switch (input)
+                        {
+                            case "add":
+                                Console.WriteLine("Formlua: a + b = c");
+                                Console.WriteLine("Insert a:");
+                                intInputs.Add(int.Parse(Console.ReadLine()));
+
+                                Console.WriteLine("Insert b:");
+                                intInputs.Add(int.Parse(Console.ReadLine()));
+
+                                Console.WriteLine("c = " + MathFunc.Addition(intInputs[0], intInputs[1]));
+                                break;
+
+                            case "sub":
+                                Console.WriteLine("Formlua: a - b = c");
+                                Console.WriteLine("Insert a:");
+                                intInputs.Add(int.Parse(Console.ReadLine()));
+
+                                Console.WriteLine("Insert b:");
+                                intInputs.Add(int.Parse(Console.ReadLine()));
+
+                                Console.WriteLine("c = " + MathFunc.Subtraction(intInputs[0], intInputs[1]));
+                                break;
+
+                            case "mult":
+                                Console.WriteLine("Formlua: a * b = c");
+                                Console.WriteLine("Insert a:");
+                                intInputs.Add(int.Parse(Console.ReadLine()));
+
+                                Console.WriteLine("Insert b:");
+                                intInputs.Add(int.Parse(Console.ReadLine()));
+
+                                Console.WriteLine("c = " + MathFunc.Multiplication(intInputs[0], intInputs[1]));
+                                break;
+
+                            case "div":
+                                Console.WriteLine("Formlua: a / b = c");
+                                Console.WriteLine("Insert a:");
+                                intInputs.Add(int.Parse(Console.ReadLine()));
+
+                                Console.WriteLine("Insert b:");
+                                intInputs.Add(int.Parse(Console.ReadLine()));
+
+                                Console.WriteLine("c = " + MathFunc.Division(intInputs[0], intInputs[1]));
+                                break;
+
+
+                            case "custom":
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        break;
+
                     case "fib":
                         Console.WriteLine("Insert A Number:");
-                        intInputs[0] = int.Parse(Console.ReadLine());
+                        intInputs.Add(int.Parse(Console.ReadLine()));
                         long[] fibNums = Fibonacci(intInputs[0]);
                         foreach (int i in fibNums)
                         {
@@ -33,7 +92,7 @@ namespace GitSolutions
 
                     case "fibEven":
                         Console.WriteLine("Insert A Number:");
-                        intInputs[0] = int.Parse(Console.ReadLine());
+                        intInputs.Add(int.Parse(Console.ReadLine()));
                         long[] fibEvenNums = Fibonacci(intInputs[0], (a) => a % 2 == 0);
                         break;
 
@@ -55,7 +114,7 @@ namespace GitSolutions
 
                     case "pi":
                         Console.WriteLine("Insert A Number \nMax Is {0}", Math.PI.ToString().Length);
-                        intInputs[1] = int.Parse(Console.ReadLine());
+                        intInputs.Add(int.Parse(Console.ReadLine()));
 
                         PiToTheNthNumber(intInputs[1]);
                         Console.ReadLine();
@@ -74,20 +133,20 @@ namespace GitSolutions
 
                     case "checkerboard":
                         Console.WriteLine("Insert # of Rows");
-                        intInputs[1] = int.Parse(Console.ReadLine());
+                        intInputs.Add(int.Parse(Console.ReadLine()));
 
                         Console.WriteLine("Insert # of Columns");
-                        intInputs[2] = int.Parse(Console.ReadLine());
+                        intInputs.Add(int.Parse(Console.ReadLine()));
 
-                        CheckerBoard(intInputs[1], intInputs[2]);
+                        CheckerBoard(intInputs[0], intInputs[1]);
                         Console.ReadLine();
                         break;
 
                     case "prime":
                         Console.WriteLine("Insert A Number");
-                        intInputs[1] = int.Parse(Console.ReadLine());
+                        intInputs.Add(int.Parse(Console.ReadLine()));
 
-                        IsPrimeNumber(intInputs[1]);
+                        IsPrimeNumber(intInputs[0]);
                         Console.ReadLine();
                         break;
 
@@ -107,7 +166,8 @@ namespace GitSolutions
 
         }
 
-        public static long[] Fibonacci(int n, Func<long, bool> predicate = null) {
+        public static long[] Fibonacci(int n, Func<long, bool> predicate = null)
+        {
 
             long a = 2;
             long b = 1;
@@ -118,12 +178,15 @@ namespace GitSolutions
                 long temp = a;
                 a = b;
                 b = temp + b;
-                if (predicate != null) {
-                    if (predicate(b)) {
+                if (predicate != null)
+                {
+                    if (predicate(b))
+                    {
                         list.Add(b);
                     }
                 }
-                else {
+                else
+                {
                     list.Add(b);
                 }
             }
@@ -174,13 +237,13 @@ namespace GitSolutions
                     moneyMade -= subArr[0];
                     itemsBought++;
                     hold = true;
-                    break; 
+                    break;
                 }
                 else
                 {
                     if (subArr[0] == subArr.Max() || subArr.Length == 1)
                     {
-                        
+
                     }
                     else
                     {
