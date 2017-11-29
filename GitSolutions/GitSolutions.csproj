@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ICloningService.cs" />
     <Compile Include="MathFunc.cs" />
+    <Compile Include="PagnationHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
