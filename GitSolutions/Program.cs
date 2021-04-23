@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 
 namespace GitSolutions
 {
@@ -17,18 +17,23 @@ namespace GitSolutions
                 string input = Console.ReadLine();
                 List<object> inputs = new List<object>();
 
-                switch (input)
+                switch (input.ToLower())
                 {
 
-                    case "countCombinationsKata":
-                        CountCombinations(10, new[] { 1, 2, 3 });
+                    case "compressandcut":
+                        Console.WriteLine("Insert the string to compress:");
+                        inputs.Add(Console.ReadLine());
+                        Console.WriteLine("Insert the length to cut:");
+                        inputs.Add(int.Parse(Console.ReadLine()));
+                        Console.WriteLine(CompressAndCutString((string)inputs[0], (int)inputs[1]));
                         break;
 
-                    case "sumConsecutivesKata":
+
+                    case "sumconsecutives":
                         SumConsecutives(new List<int> { 1, 4, 4, 4, 0, 4, 3, 3, 1 });
                         break;
 
-                    case "nbrOfLapsKata":
+                    case "nbroflaps":
                         Console.WriteLine("Insert the first distance:");
                         inputs.Add(int.Parse(Console.ReadLine()));
                         Console.WriteLine("Insert the second distance:");
@@ -36,29 +41,29 @@ namespace GitSolutions
                         Console.WriteLine(NbrOfLaps((int)inputs[0], (int)inputs[1]));
                         break;
 
-                    case "reverseWordsKata":
+                    case "reversewordsv1":
                         Console.WriteLine("Insert a sentence:");
                         input = Console.ReadLine();
-                        Console.WriteLine(ReverseWords(input));
+                        Console.WriteLine(ReverseWordsV1(input));
                         break;
 
-                    case "persistenceKata":
+                    case "persistence":
                         Console.WriteLine("Insert a number:");
                         inputs.Add(long.Parse(Console.ReadLine()));
                         Console.WriteLine(Persistence((long)inputs[0]));
                         break;
 
-                    case "encodeKata":
+                    case "encode":
                         Console.WriteLine("Insert something:");
                         input = Console.ReadLine();
                         Console.WriteLine(DuplicateEncode(input));
                         break;
 
-                    case "sortArrayKata":
+                    case "sortarray":
                         SortArray(new int[] { 1, 4, 2, 7, 3, 5, 8, 9, 6, 0 });
                         break;
 
-                    case "digPowKata":
+                    case "digpow":
                         Console.WriteLine("Insert a base number:");
                         inputs.Add(int.Parse(Console.ReadLine()));
                         Console.WriteLine("Insert a exponent:");
@@ -66,13 +71,13 @@ namespace GitSolutions
                         Console.WriteLine(DigPow((int)inputs[0], (int)inputs[1]));
                         break;
 
-                    case "jadenKata":
+                    case "jaden":
                         Console.WriteLine("Insert a sentence:");
                         input = Console.ReadLine();
                         Console.WriteLine(ToJadenCase(input));
                         break;
 
-                    case "moneyKata":
+                    case "money":
                         Console.WriteLine("Insert Amount");
                         inputs.Add(int.Parse(Console.ReadLine()));
 
@@ -215,6 +220,57 @@ namespace GitSolutions
                         Console.ReadLine();
                         break;
 
+                    case "formatduration":
+                        Console.WriteLine("Insert A Number");
+                        inputs.Add(int.Parse(Console.ReadLine()));
+
+                        string result = FormatDuration((int)inputs[0]);
+                        Console.WriteLine(result);
+                        Console.ReadLine();
+                        break;
+
+                    case "extract":
+                        Console.WriteLine(Extract(new[] { 1, 2 }));
+                        Console.WriteLine(Extract(new[] { 1, 2, 3 }));
+                        Console.WriteLine(Extract(new[] { -6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 17, 18, 19, 20 }));
+
+
+                        Console.ReadLine();
+                        break;
+
+
+                    case "twosum":
+                        foreach (int i in TwoSum(new[] { 1, 2, 3 }, 4))
+                            Console.Write(i + ", ");
+                        Console.WriteLine();
+
+                        foreach (int i in TwoSum(new[] { 1234, 5678, 9012 }, 14690))
+                            Console.Write(i + ", ");
+                        Console.WriteLine();
+
+                        foreach (int i in TwoSum(new[] { 2, 2, 3 }, 4))
+                            Console.Write(i + ", ");
+                        Console.WriteLine();
+
+                        Console.ReadLine();
+                        break;
+
+
+                    case "reversewordsv2":
+                        Console.WriteLine("Insert Text...");
+                        input = Console.ReadLine();
+                        Console.WriteLine(ReverseWordsV2(input));
+
+                        break;
+
+                    case "recursivelyremovealladjacentduplicates":
+                        Console.WriteLine("Insert Text...");
+                        input = Console.ReadLine();
+                        Console.WriteLine(RecursivelyRemoveAllAdjacentDuplicates(input));
+
+                        break;
+
+
                     case "quit":
                         Console.WriteLine("Exit Application?");
                         input = Console.ReadLine();
@@ -263,7 +319,7 @@ namespace GitSolutions
                 rest /= a;
                 denominator /= a;
 
-                result += ((wholes > 0) ? " " : "0 " ) + rest + "/" + denominator;
+                result += ((wholes > 0) ? " " : "0 ") + rest + "/" + denominator;
             }
             return result;
         }
@@ -345,19 +401,6 @@ namespace GitSolutions
             }
 
             return a;
-        }
-
-        public static string ReverseWords(string str)
-        {
-            string[] result = str.Split(' ');
-
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = string.Concat(result[i].ToCharArray().Reverse());
-            }
-
-            return string.Join(" ", result);
-
         }
 
         public static int Persistence(long n)
@@ -655,5 +698,242 @@ namespace GitSolutions
             }
             Console.ReadLine();
         }
+
+        public static int CompressAndCutString(string text, int k)
+        {
+            int result = 0;
+
+            for (int index = 0; index < text.Length; index++)
+            {
+
+                if (index - k > -1)
+                {
+                    string cutText = text.Substring(0, index - k) + text.Substring(index, text.Length - 1);
+
+                    string compressedText = compress(cutText);
+
+                    if (compressedText.Length < result || result == 0)
+                        result = compressedText.Length;
+                }
+
+            }
+
+            return result;
+
+
+            string compress(string s)
+            {
+
+                string r = string.Empty;
+
+                char[] charString = s.ToCharArray();
+                char currentChar = default
+                   , nextChar = default;
+                int charReps = 1;
+
+
+                for (int i = 0; i < s.Length; i++)
+                {
+                    currentChar = s[i];
+                    nextChar = i == 0 ? default : s[i + 1];
+
+
+                    if (currentChar == nextChar)
+                    {
+                        charReps++;
+                    }
+                    else
+                    {
+                        result += charReps + currentChar;
+                        charReps = 1;
+                    }
+
+                }
+
+                return r;
+            }
+
+        }
+
+        public static string ToUnderscore(int str)
+        {
+            return str.ToString();
+        }
+
+        public static string ToUnderscore(string str)
+        {
+            string value = null;
+
+            foreach (string v in Regex.Split(str, @"(?<!^)(?=[A-Z])"))
+                value += v;
+
+            return value;
+
+
+        }
+
+        public static string FormatDuration(int s)
+        {
+            if (s == 0)
+                return "now";
+
+            string value = null;
+
+            int seconds = s - ((int)Math.Round((double)s / 60) * 60),
+                hours = (int)Math.Round((double)s / 60),
+                days = (int)Math.Round((double)hours / 24),
+                years = (int)Math.Round((double)days / 365);
+
+
+
+            if (years != 0)
+                value += $"{years} year{(years > 1 ? "s" : "")}";
+
+            if (days != 0)
+                value += $"{(years != 0 ? " ," : hours == 0 && seconds == 0 ? " and" : "")}{days} day{(days > 1 ? "s" : "")}";
+
+            if (hours != 0)
+                value += $"{(years != 0 || days != 0 ? " ," : seconds == 0 ? " and" : "")}{hours} hour{(hours > 1 ? "s" : "")}";
+
+            if (seconds != 0)
+                value += $"{(years != 0 || days != 0 || hours != 0 ? " and" : "")}{seconds} second{(seconds > 1 ? "s" : "")}";
+
+
+            return value;
+
+
+        }
+
+        public static string Extract(int[] args)
+        {
+            string result = null;
+
+            if (args.Length > 0)
+            {
+                for (int i = 0; i < args.Length; i++)
+                {
+
+                    int curNum = args[i];
+                    int prevNum = args[i == 0 ? 0 : i - 1];
+                    int nextNum = args[i == args.Length - 1 ? args.Length - 1 : i + 1];
+
+
+
+                    if (i == 0 || (curNum - 1 != prevNum))
+                        result += (i == 0 ? "" : ",") + curNum;
+
+                    else if (args.Length <= 2)
+                        result += "," + curNum;
+
+                    else if (i == args.Length - 1 || curNum != nextNum && curNum + 1 != nextNum)
+                        result += "-" + curNum;
+
+                }
+            }
+
+            return result;
+        }
+
+        public static int[] TwoSum(int[] numbers, int target)
+        {
+            List<int> result = new List<int>();
+
+            if (numbers.Length > 1)
+            {
+                for (int i1 = 0; i1 < numbers.Length; i1++)
+                {
+                    for (int i2 = 1; i2 < numbers.Length; i2++)
+                    {
+                        if (numbers[i1] + numbers[i2] == target)
+                        {
+                            result.AddRange(new[] { i1, i2 });
+                            return result.ToArray();
+                        }
+                    }
+                }
+            }
+
+            return new int[0];
+        }
+
+        public static string ReverseWordsV1(string str)
+        {
+            string[] result = str.Split(' ');
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = string.Concat(result[i].ToCharArray().Reverse());
+            }
+
+            return string.Join(" ", result);
+
+        }
+
+        public static string ReverseWordsV2(string txt)
+        {
+
+            string result = null;
+            string[] splitTxt = txt.Split(' ');
+
+            if (splitTxt.Length > 1)
+            {
+                for (int i = splitTxt.Length - 1; i > 0; i--)
+                {
+                    result += (i == splitTxt.Length - 1 ? "" : " ") + splitTxt[i];
+                }
+            }
+
+            return result;
+
+        }
+
+        public static string RecursivelyRemoveAllAdjacentDuplicates(string txt)
+        {
+
+            int i = 0,
+                startIndex = -1,
+                length = 2;
+
+
+
+            while (i < txt.Length - 1)
+            {
+                if (i != txt.Length - 1)
+                {
+                    int after = i + 1;
+                    if (txt[i] == txt[after])
+                    {
+                        if (startIndex != -1)
+                            length++;
+                        else
+                            startIndex = i;
+                    }
+
+                    else if (startIndex != -1)
+                    {
+                        txt = txt.Remove(startIndex, length);
+                        startIndex = -1;
+                        length = 2;
+                        i = 0;
+                        continue;
+                    }
+
+                    if (after == txt.Length - 1 && startIndex != -1)
+                    {
+                        txt = txt.Remove(startIndex, length);
+                        startIndex = -1;
+                        length = 2;
+                        i = 0;
+                        continue;
+                    }
+
+                    i++;
+                }
+            }
+
+            return txt;
+
+        }
+
     }
 }
